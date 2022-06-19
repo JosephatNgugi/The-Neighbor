@@ -9,8 +9,15 @@ from .models import *
 
 def homepage(request):
     all_posts = Post.objects.all()
+    all_hoods = NeighborHood.objects.all()
     posts = all_posts[::-1]
-    return render(request, 'neighbor/home.html',{'posts':posts})
+    hoods = all_hoods[::-1]
+    
+    context = {
+        'posts':posts,
+        'hoods':hoods,
+        }
+    return render(request, 'neighbor/home.html', context)
 
 def UserRegistration(request):
     if request.method == 'POST':
