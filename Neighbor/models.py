@@ -1,4 +1,3 @@
-from operator import ne
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from django.db import models
@@ -25,3 +24,29 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} profile'
+
+class NeighborHood(models.Model):
+    hood_name = models.CharField(max_length=50)
+    location = models.CharField(max_length=60)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='hood')
+    description = models.TextField()
+    health_contact = models.IntegerField(null=True, blank=True)
+    police_contact = models.IntegerField(null=True, blank=True)
+
+
+    def create_neighborhood(self):
+        self.save()
+
+    def delete_neighborhood(self):
+        self.delete()
+
+    @classmethod
+    def find_neighborhood(cls, neighborhood_id):
+        return cls.objects.filter(id=neighborhood_id)
+
+    def update_neighborhood(self, name):
+        self.name = name
+        self.save()
+
+    def __str__(self):
+        return f'{self.name} neighborhood'
