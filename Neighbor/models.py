@@ -30,6 +30,7 @@ class NeighborHood(models.Model):
     location = models.CharField(max_length=60)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='hood')
     description = models.TextField()
+    location = models.CharField(max_length=200, null=True)
     health_contact = models.IntegerField(null=True, blank=True)
     police_contact = models.IntegerField(null=True, blank=True)
 
