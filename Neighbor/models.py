@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    name = models.CharField(max_length=80, blank=True)
+    # name = models.CharField(max_length=80, blank=True)
     bio = models.TextField(max_length=250, blank=True)
     avatar = CloudinaryField('images')
     neighborhood = models.ForeignKey('Neighborhood', on_delete=models.SET_NULL, null=True, blank= True)
@@ -44,9 +44,29 @@ class NeighborHood(models.Model):
     def find_neighborhood(cls, neighborhood_id):
         return cls.objects.filter(id=neighborhood_id)
 
-    def update_neighborhood(self, name):
-        self.name = name
+    def update_neighborhood(self, hood_name):
+        self.hood_name = hood_name
         self.save()
 
     def __str__(self):
-        return f'{self.name} neighborhood'
+        return f'{self.hood_name} neighborhood'
+    
+class Business(models.Model):
+    business_name = models.CharField(max_length=120)
+    email = models.EmailField(max_length=50)
+    description = models.TextField(blank=True)
+    neighbourhood = models.ForeignKey(NeighborHood, on_delete=models.CASCADE, related_name='business')
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='owner')
+
+    def create_business(self):
+        self.save()
+
+    def delete_business(self):
+        self.delete()
+
+    @classmethod
+    def search_business(cls, name):
+        return cls.objects.filter(business_name__icontains=name).all()
+
+    def __str__(self):
+        return f'{self.business_name} Business'
