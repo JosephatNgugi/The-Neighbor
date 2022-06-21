@@ -39,13 +39,21 @@ def profile(request,id):
     return render(request, 'user/profile.html', {"profile":profile})
 
 @login_required(login_url='login')
-def update_profile(request, id):
-    user= request.user(id=id)
+def update_profile(request):
+    user= request.user
     if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=request.user)
         prof_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if prof_form.is_valid():
+        if user_form.is_valid() and prof_form.is_valid():
+            user_form.save()
             prof_form.save()
             return redirect('profile', user.id)
     else:
+        user_form = UserUpdateForm(instance=request.user)
         prof_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'user/update-profile.html', {'prof_form':prof_form})
+        
+    context = {
+        'user_form':user_form,
+        'prof_form':prof_form,
+        }
+    return render(request, 'user/update-profile.html', context)
