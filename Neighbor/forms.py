@@ -23,3 +23,8 @@ class HoodForm(forms.ModelForm):
     class Meta:
         model = NeighborHood
         exclude = ('user',)     
+
+class BusinessForm(forms.ModelForm):
+    class Meta:
+        model = Business
+        exclude = ('user','neighborhood')

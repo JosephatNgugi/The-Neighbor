@@ -69,3 +69,26 @@ def create_hood(request):
     else:
         form = HoodForm()
     return render(request,'hood/newhood.html',{'form':form})
+
+def hood(request,id):
+    hood = NeighborHood.objects.get(id = id)
+    biz = Business.objects.filter(neighbourhood=hood)
+    all_posts = Post.objects.filter(hood=hood)
+    posts = all_posts[::-1]
+    if request.method == "POST":
+        form = BusinessForm(request.POST)
+        if form.is_valid():
+            biz_form = form.save(commit=False)
+            biz_form.neighbourhood = hood
+            biz_form.user = request.user.profile
+            biz_form.save()
+            return redirect('hood', hood.id)
+    else:
+        form = BusinessForm()
+    context ={
+        'hood':hood,
+        'business':biz,
+        'posts':posts,
+        'form':form,      
+    }
+    return render(request,'hood/hood.html',context)
