@@ -14,6 +14,7 @@ urlpatterns = [
     path('accounts/update/profile/',views.update_profile,name = 'updateProfile'), 
     path('create/new-hood/', views.create_hood, name='createHood'),
     path('hood/<id>/', views.hood, name='hood'),
+    path('hood/join-hood/<id>/', views.join_hood, name='join-hood')
 ]
 
 if settings.DEBUG:

@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 
@@ -73,7 +73,8 @@ def create_hood(request):
 def hood(request,id):
     hood = NeighborHood.objects.get(id = id)
     biz = Business.objects.filter(neighbourhood=hood)
-    all_posts = Post.objects.filter(hood=hood)
+    all_posts = Post.objects.filter(neighborhood=hood)
+    members = UserProfile.objects.filter(neighborhood = hood )
     posts = all_posts[::-1]
     if request.method == "POST":
         form = BusinessForm(request.POST)
@@ -89,6 +90,13 @@ def hood(request,id):
         'hood':hood,
         'business':biz,
         'posts':posts,
-        'form':form,      
+        'form':form,  
+        'members':members    
     }
     return render(request,'hood/hood.html',context)
+
+def join_hood(request,id):
+    neighborhood = get_object_or_404(NeighborHood,id=id)
+    request.user.profile.neighborhood=neighborhood
+    request.user.profile.save()
+    return redirect('homepage')
