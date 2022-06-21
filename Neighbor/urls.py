@@ -11,7 +11,8 @@ urlpatterns = [
     path('accounts/sign-up/', views.UserRegistration, name='signup'),
     path('accounts/profile/<id>/',views.profile,name = 'profile'),
     path('accounts/profile/', RedirectView.as_view(url='/')),
-    path('accounts/update/profile/<id>/',views.update_profile,name = 'updateProfile'), 
+    path('accounts/update/profile/',views.update_profile,name = 'updateProfile'), 
+    path('create/new-hood/', views.create_hood, name='createHood'),
 ]
 
 if settings.DEBUG:

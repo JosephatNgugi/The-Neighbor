@@ -57,3 +57,15 @@ def update_profile(request):
         'prof_form':prof_form,
         }
     return render(request, 'user/update-profile.html', context)
+
+def create_hood(request):
+    if request.method =="POST":
+        form  = HoodForm(request.POST,request.FILES)
+        if form.is_valid():
+            hood = form.save(commit=False)
+            hood.admin = request.user.profile
+            hood.save()
+            return redirect('homepage')
+    else:
+        form = HoodForm()
+    return render(request,'hood/newhood.html',{'form':form})

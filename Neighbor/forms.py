@@ -18,3 +18,8 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username','email'] 
+
+class HoodForm(forms.ModelForm):
+    class Meta:
+        model = NeighborHood
+        exclude = ('user',)     
