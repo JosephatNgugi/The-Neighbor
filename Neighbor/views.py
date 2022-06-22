@@ -107,6 +107,20 @@ def leave_hood(request,id):
     request.user.profile.save()
     return redirect('homepage')
 
+def post(request,hood_id):
+    hood = NeighborHood.objects.get(id=hood_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.hood = hood
+            post.user = request.user.profile
+            post.save()
+            return redirect('hood', hood.id)
+    else:
+        form = PostForm
+    return redirect(request, 'neighbor/post.html', {'form':form})
+
 def search_business(request):
     if request.method == 'GET':
         name = request.GET.get("title")
@@ -118,5 +132,5 @@ def search_business(request):
         }
         return render(request, 'results.html', params)
     else:
-        message = "You haven't searched for any Business category"
+        message = "You haven't searched for any Businesses"
     return render(request, "neighbor/results.html")

@@ -28,3 +28,8 @@ class BusinessForm(forms.ModelForm):
     class Meta:
         model = Business
         exclude = ('user','neighborhood')
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model=Post
+        exclude =('posted_by','neighborhood')
