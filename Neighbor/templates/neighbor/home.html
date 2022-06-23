@@ -25,6 +25,7 @@
                         {% elif not request.user.profile.neighbourhood %}
                         <a href="{% url 'join-hood'  hood.id %}" class="btn btn-outline-danger btn-sm">Join Hood</a>
                         {% endif %}
+                        <a href="{% url 'hood'  hood.id %}" class="btn btn-outline-danger btn-sm ml-5">View</a>
                     </div>
                 </div>
             </div>
