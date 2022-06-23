@@ -6,7 +6,7 @@ from .forms import *
 from .models import *
 
 # Create your views here.
-
+@login_required(login_url='/accounts/login/')
 def homepage(request):
     all_posts = Post.objects.all()
     all_hoods = NeighborHood.objects.all()
@@ -58,6 +58,7 @@ def update_profile(request):
         }
     return render(request, 'user/update-profile.html', context)
 
+@login_required(login_url='/accounts/login/')
 def create_hood(request):
     if request.method =="POST":
         form  = HoodForm(request.POST,request.FILES)
@@ -70,6 +71,7 @@ def create_hood(request):
         form = HoodForm()
     return render(request,'hood/newhood.html',{'form':form})
 
+@login_required(login_url='/accounts/login/')
 def hood(request,id):
     hood = NeighborHood.objects.get(id = id)
     biz = Business.objects.filter(neighbourhood=hood)
@@ -107,6 +109,7 @@ def leave_hood(request,id):
     request.user.profile.save()
     return redirect('home')
 
+@login_required(login_url='/accounts/login/')
 def post(request,hood_id):
     hood = NeighborHood.objects.get(id=hood_id)
     if request.method == 'POST':
