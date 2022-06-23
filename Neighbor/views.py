@@ -28,7 +28,7 @@ def UserRegistration(request):
             InputPassword = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=InputPassword)
             login(request, user)
-            return redirect('homepage')
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'registration/registration_form.html', {'form': form})
@@ -63,9 +63,9 @@ def create_hood(request):
         form  = HoodForm(request.POST,request.FILES)
         if form.is_valid():
             hood = form.save(commit=False)
-            hood.admin = request.user.profile
+            hood.user = request.user.profile
             hood.save()
-            return redirect('homepage')
+            return redirect('home')
     else:
         form = HoodForm()
     return render(request,'hood/newhood.html',{'form':form})
@@ -99,13 +99,13 @@ def join_hood(request,id):
     neighborhood = get_object_or_404(NeighborHood,id=id)
     request.user.profile.neighborhood=neighborhood
     request.user.profile.save()
-    return redirect('homepage')
+    return redirect('home')
 
 def leave_hood(request,id):
     hood = get_object_or_404(NeighborHood,id=id)
     request.user.profile.neighborhood=None
     request.user.profile.save()
-    return redirect('homepage')
+    return redirect('home')
 
 def post(request,hood_id):
     hood = NeighborHood.objects.get(id=hood_id)
@@ -124,13 +124,13 @@ def post(request,hood_id):
 def search_business(request):
     if request.method == 'GET':
         name = request.GET.get("title")
-        results = Business.objects.filter(name__icontains=name).all()
+        results = Business.objects.filter(business_name__icontains=name).all()
         message = f'name'
         params = {
             'results': results,
             'message': message
         }
-        return render(request, 'results.html', params)
+        return render(request, 'neighbor/results.html', params)
     else:
         message = "You haven't searched for any Businesses"
     return render(request, "neighbor/results.html")

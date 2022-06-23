@@ -11,9 +11,10 @@
             {% endif %}
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="text-center pt-2">Sign Up</h3>
+                    <h5 class="px-2 text-center">THE <br/> NEIGHBORHOOD</h5>
+                    <h5 class="text-center">Sign Up</h5>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body pt-3">
                     <form action="/accounts/register/" method="POST">
                         {% csrf_token %}
                         {% bootstrap_form form %}
