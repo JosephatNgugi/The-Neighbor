@@ -119,7 +119,7 @@ def post(request,hood_id):
             return redirect('hood', hood.id)
     else:
         form = PostForm
-    return redirect(request, 'neighbor/post.html', {'form':form})
+    return render(request, 'neighbor/post.html', {'form':form})
 
 def search_business(request):
     if request.method == 'GET':
